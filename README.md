@@ -26,4 +26,4 @@ Este projeto não é apenas uma interface visual, ele implementa padrões de mer
 
 1. Clone o repositório:
 ```bash
-git clone [https://github.com/KKauz-D/dashboard_next.git]
+git clone https://github.com/KKauz-D/dashboard_next.git
