@@ -1,41 +1,9 @@
+import { getCryptoData } from "@/lib/data"; 
 import { BitcoinChart } from "@/components/charts/BitcoinChart";
-import { DashboardDataResponse } from "@/types";
 import { SiBitcoin, SiEthereum, SiSolana } from "react-icons/si";
 import { CryptoCard } from "@/components/ui/CryptoCard";
 import { CurrencySelector } from "@/components/ui/CurrencySelector";
 import { TrendingUp, TrendingDown } from "lucide-react";
-
-function getBaseUrl() {
-    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-    return `http://localhost:3000`
-}
-
-async function getDashboardData(coin: string, currency: string): Promise<DashboardDataResponse | null> {
-    const targetUrl = `${getBaseUrl()}/api/dashboard-data?coin=${coin}&currency=${currency}`;
-    
-    console.log("==== INÍCIO DO FETCH ====");
-    console.log("URL Alvo:", targetUrl);
-
-    try {        
-        const res = await fetch(targetUrl, {
-            cache: 'no-store'
-        });
-
-        if (!res.ok) {
-            const errorText = await res.text();
-            console.error("O Fetch falhou com Status:", res.status);
-            console.error("Resposta do Servidor:", errorText);
-            throw new Error(`Erro HTTP: ${res.status}`);
-        }
-
-        console.log("✅ Fetch realizado com sucesso!");
-        return res.json();
-    } catch (error) {
-
-        console.error("ERRO FATAL NO CATCH DO GETDASHBOARDDATA:", error);
-        return null;
-    }
-}
 
 function formatCurrency(value: number, currency: string) {
     return new Intl.NumberFormat('pt-BR', {
@@ -60,14 +28,15 @@ export default async function DashboardPage(props: {
     
   const searchParams = await props.searchParams;
   const selectedCoin = searchParams.coin || 'bitcoin';
-  const selectedCurrency = searchParams.currency || 'usd'; // Padrão é USD
+  const selectedCurrency = searchParams.currency || 'usd'; 
   
-  const data = await getDashboardData(selectedCoin, selectedCurrency);
+  const data = await getCryptoData(selectedCoin, selectedCurrency);
 
-  const currentPrice = data?.currentPrice || 0;
-  const chartData = data?.bitcoinData || [];
-  const priceChange24h = data?.priceChange24h || 0;
-  const volume24h = data?.volume24h || 0;
+  const currentPrice = data.currentPrice;
+  const chartData = data.bitcoinData;
+  const priceChange24h = data.priceChange24h;
+  const volume24h = data.volume24h;
+  
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
