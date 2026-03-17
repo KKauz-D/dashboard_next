@@ -11,16 +11,28 @@ function getBaseUrl() {
 }
 
 async function getDashboardData(coin: string, currency: string): Promise<DashboardDataResponse | null> {
+    const targetUrl = `${getBaseUrl()}/api/dashboard-data?coin=${coin}&currency=${currency}`;
+    
+    console.log("==== INÍCIO DO FETCH ====");
+    console.log("URL Alvo:", targetUrl);
+
     try {        
-        const res = await fetch(`${getBaseUrl()}/api/dashboard-data?coin=${coin}&currency=${currency}`, {
+        const res = await fetch(targetUrl, {
             cache: 'no-store'
         });
 
-        if (!res.ok) throw new Error("erro ao buscar dados do dashboard");
+        if (!res.ok) {
+            const errorText = await res.text();
+            console.error("O Fetch falhou com Status:", res.status);
+            console.error("Resposta do Servidor:", errorText);
+            throw new Error(`Erro HTTP: ${res.status}`);
+        }
 
+        console.log("✅ Fetch realizado com sucesso!");
         return res.json();
     } catch (error) {
-        console.error(error);
+
+        console.error("ERRO FATAL NO CATCH DO GETDASHBOARDDATA:", error);
         return null;
     }
 }
