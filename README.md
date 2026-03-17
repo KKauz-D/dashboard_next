@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Crypto Analytics Dashboard
 
-## Getting Started
+Um painel de controle interativo e responsivo focado no monitoramento de criptomoedas. Desenvolvido para demonstrar conceitos avançados de arquitetura Front-end utilizando o ecossistema moderno do Next.js (App Router).
 
-First, run the development server:
+## Tecnologias Utilizadas
 
+* **Framework:** Next.js 15 (App Router, Server Components, Server Actions)
+* **Linguagem:** TypeScript
+* **Estilização:** Tailwind CSS
+* **Gráficos:** Recharts
+* **Ícones:** React Icons & Lucide React
+* **Tematização:** Next-themes (Dark/Light Mode)
+* **Consumo de Dados:** CoinGecko API
+
+## Funcionalidades e Diferenciais Arquiteturais
+
+Este projeto não é apenas uma interface visual, ele implementa padrões de mercado para aplicações robustas:
+
+* **Padrão BFF (Backend for Frontend):** O frontend não chama a API da CoinGecko diretamente. Criei uma *Route Handler* (`app/api/dashboard-data/route.ts`) no Next.js que busca, limpa e formata os dados brutos antes de entregá-los aos componentes visuais.
+* **Autenticação Simulada & Proteção de Rotas:** Utilização de *Server Actions* para processar o login com segurança no servidor e injeção de Cookies (`httpOnly`). Um *Proxy* nativo do Next.js protege a rota `/dashboard` contra acessos não autorizados.
+* **Gerenciamento de Estado via URL:** Em vez de usar `useState` excessivamente no cliente, o estado da moeda selecionada (Bitcoin, Ethereum, Solana) e a conversão fiduciária (USD, BRL, EUR) são controlados via *Search Params* na URL, permitindo SSR e compartilhamento de links com o estado exato da página.
+* **Acessibilidade Visual:** Implementação nativa de Dark/Light mode com persistência de preferência do usuário, estendendo as cores dinâmicas até os elementos SVG do Recharts.
+* **Tratamento de Erros e Carregamento:** Uso nativo do React Suspense com `loading.tsx` (Skeleton Screens) e `error.tsx` (Error Boundaries) para garantir que falhas de rede não quebrem a experiência do usuário.
+
+## Como rodar o projeto localmente
+
+1. Clone o repositório:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+git clone [https://github.com/KKauz-D/dashboard_next.git]
